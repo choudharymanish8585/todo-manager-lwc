@@ -1,0 +1,18 @@
+<template>
+    <lightning-layout class="container" multiple-rows>
+        <div class="slds-align-content-center slds-m-vertical_small slds-text-heading_label">Your TODOS for last 7 days
+        </div>
+        <lightning-layout-item padding="medium" size="12">
+            <template for:each={todos} for:item="todo">
+                <div class="slds-m-around_medium" key={todo.date}>
+                    <lightning-badge label={todo.date}></lightning-badge>
+                </div>
+                <template for:each={todo.items} for:item="item">
+                    <c-to-do-list-item key={item.todoId} todo-name={item.todoName} todo-id={item.todoId}
+                        done={item.done}>
+                    </c-to-do-list-item>
+                </template>
+            </template>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

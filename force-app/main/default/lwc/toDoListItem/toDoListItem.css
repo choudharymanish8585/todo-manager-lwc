@@ -1,0 +1,23 @@
+.todo {
+    border: 1px solid lightgray;
+    padding: .5rem;
+    width: 100%;
+    border-radius: 4px;
+    margin-top: 4px;
+    transition: all .5s ease;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: smaller;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.upcoming {
+    background-color: crimson;
+    color: whitesmoke;
+}
+
+.completed {
+    background-color: cyan;
+    color: darkslategrey;
+}
