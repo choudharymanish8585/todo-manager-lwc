@@ -1,3 +1,14 @@
+# How to install
+1. Clone this repo or download as zip file
+2. Open the donwloaded folder in VS Code
+3. Authorize a Dev Hub Org
+4. Create a Scratch Org
+5. Push all metadata to scratch org (sfdx force:source:push)
+6. Assign the permission set to user to get access to all objects and metadata (sfdx force:user:permset:assign -n ToDoManager)
+7. You should be able to see an app named "SFDCFacts Academy"
+
+
+
 # Salesforce App
 
 This guide helps Salesforce developers who are new to Visual Studio Code go from zero to a deployed app using Salesforce Extensions for VS Code and Salesforce CLI.
