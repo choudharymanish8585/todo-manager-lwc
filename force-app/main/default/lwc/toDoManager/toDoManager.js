@@ -85,21 +85,25 @@ export default class toDoManager extends LightningElement {
     //get input box html element
     const inputBox = this.template.querySelector("lightning-input");
     //create a new todo object based on input box value
-    const todo = { todoName: inputBox.value, done: false };
-    //call addtodo server method to add new todo object
-    //serialize todo object before sending to server
-    addTodo({ payload: JSON.stringify(todo) })
-      .then(result => {
-        if (result) {
-          //fetch fresh list of todos
-          this.fetchTodos();
-        }
-      })
-      .catch(error => {
-        console.error("Error in adding todo" + error);
-      });
+    // If user clicks + button whithout entering any value return
+    if(inputBox.value.length !== 0){
+      //create a new todo object based on input box value
+      const todo = { todoName: inputBox.value, done: false };
+      //call addtodo server method to add new todo object
+      //serialize todo object before sending to server
+      addTodo({ payload: JSON.stringify(todo) })
+        .then(result => {
+          if (result) {
+            //fetch fresh list of todos
+            this.fetchTodos();
+          }
+        })
+        .catch(error => {
+          console.error("Error in adding task " + error);
+        });
 
-    inputBox.value = "";
+      inputBox.value = "";
+    }
   }
 
   /**
