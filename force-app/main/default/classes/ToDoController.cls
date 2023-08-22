@@ -29,6 +29,7 @@ private class ToDodController {
     todo.put('Id', payloadObject.todoId);
     todo.put('Name', payloadObject.todoName);
     todo.put('Done__c', payloadObject.done);
+    System.debug('testing');
 
     update todo;
   }
