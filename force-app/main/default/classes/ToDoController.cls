@@ -22,7 +22,7 @@ public class ToDoController {
   //Update an item
   //Accepts serialized ToDo object
   @AuraEnabled
-  public static void updateTodo(String payload) {
+  private static void updateTodo(String payload) {
     ToDo payloadObject = (ToDo) JSON.deserialize(payload, ToDo.class);
 
     SObject todo = (Sobject) Type.forName('ToDo__c').newInstance();
