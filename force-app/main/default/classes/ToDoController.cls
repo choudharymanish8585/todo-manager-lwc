@@ -3,7 +3,7 @@
  * Support Add/Remove/Update/Retrieve APIs
  * @author Manish Choudhari
  */
-private class ToDoController {
+private class ToDodController {
   //Add a new item in ToDo__c object
   //Accepts serialized ToDo object
   @AuraEnabled
