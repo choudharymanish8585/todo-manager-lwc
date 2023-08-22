@@ -1,15 +1,42 @@
-- name: Salesforce Deploy Action
-  # You may pin to the exact commit or the version.
-  # uses: gfarb/sfdx-deploy@f6af3edd68955f50306d8d26290224e0f57f78c8
-  uses: gfarb/sfdx-deploy@v1
-  with:
-    # Username or alias for the target org. Must be pre-authorized.
-    TARGET_USERNAME: 
-    # Comma-separated list of paths to the local source files to include in the manifest.
-    SOURCE_PATH: # optional
-    # Path to folder containing manifests (destructiveChangesPre.xml, destructiveChangesPost.xml) of components to delete before and/or after the deploy.
-    DESTRUCTIVE_CHANGES: # optional
-    # Level of deployment tests to run. The default value is RunLocalTests.
-    TEST_LEVEL: # optional
-    # Number of minutes to wait for the command to complete. The default value is 33 minutes.
-    WAIT: # optional
+name: PushToFeature
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: aman
+   # Jobs to be executed
+jobs:
+    pmd-run:
+        runs-on: ubuntu-latest
+        steps:
+        # Checkout the source code
+            - name: 'Checkout source code'
+              uses: actions/checkout@v2
+
+            # Install PMD
+            - name: 'Install PMD'
+              run: |
+                  PMD_VERSION=`cat pmd/pmd-version.txt`
+                  wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F$PMD_VERSION/pmd-bin-$PMD_VERSION.zip
+                  unzip pmd-bin-$PMD_VERSION.zip -d ~
+                  mv ~/pmd-bin-$PMD_VERSION ~/pmd
+                  ~/pmd/bin/run.sh pmd --version
+            # Run PMD scan
+            - name: 'Run PMD scan'
+              run: ~/pmd/bin/run.sh pmd -d force-app -R pmd/ruleset.xml -f text
+    action-pull-request:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout repoistory
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Run the Action
+        if: startsWith(github.ref, 'refs/heads/demo')
+        uses: devops-infra/action-pull-request@v0.4.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPO_SCOPED_TOKEN }}
+        with:
+            github_token: ${{ secrets.REPO_SCOPED_TOKEN }}
+            title: Automatic pull request                           
+            get_diff: true         
