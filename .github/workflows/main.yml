@@ -28,8 +28,8 @@ jobs:
 
       - name: Authenticate with Salesforce Org
         run: |
-          echo "$SFDX_JWT_KEY" | base64 -d > jwt.pem
-          sfdx force:auth:jwt:grant -i $SFDX_CLIENT_ID -f jwt.pem --username $SFDX_USERNAME
+          echo "$SFDX_JWT_KEY" | base64 -d > jwt.key
+          sfdx force:auth:jwt:grant -i $SFDX_CLIENT_ID -f jwt.key --username $SFDX_USERNAME
 
       - name: Deploy to Salesforce Org
         run: sfdx force:source:deploy -p force-app/main/default
