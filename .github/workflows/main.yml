@@ -26,9 +26,9 @@ jobs:
       - name: Install SFDX CLI
         run: npm install -g sfdx-cli
 
-        - name: Install the production private key
+      - name: Install the production private key
         run: |
-echo ${{ secrets.SFDX_JWT_KEY }} | base64 -di > server.key
+            echo ${{ secrets.SFDX_JWT_KEY }} | base64 -di > server.key
 
       - name: Login to salesforce production org
         run: sf org login jwt --username ${{ secrets.SFDX_USERNAME }} --jwt-key-file server.key --client-id ${{ secrets.SFDX_CLIENT_ID }} --set-default
