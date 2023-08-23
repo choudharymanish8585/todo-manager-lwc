@@ -25,11 +25,13 @@ jobs:
 
       - name: Install SFDX CLI
         run: npm install -g sfdx-cli
-
-      - name: Authenticate with Salesforce Org
+      
+      - name: Install the private key
         run: |
-          echo ${{ secrets.SFDX_JWT_KEY }} | base64 -di > server.key
-          sf org login jwt --username ${{ secrets.SFDX_USERNAME }} --jwt-key-file server.key --client-id ${{ secrets.SFDX_CLIENT_ID }} --set-default
+            echo ${{ secrets.SFDX_JWT_KEY }} | base64 -di > server.key
+
+      - name: Login to salesforce org
+        run:  sfdx force:auth:jwt:grant --username ${{ secrets.SFDX_USERNAME }} --jwt-key-file server.key --client-id ${{ secrets.SFDX_CLIENT_ID }} --set-default
 
       - name: Deploy to Salesforce Org
         run: sfdx force:source:deploy -p force-app/main/default
