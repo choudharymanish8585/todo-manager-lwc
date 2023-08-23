@@ -21,15 +21,15 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18'
+          node-version: '16'
 
       - name: Install SFDX CLI
         run: npm install -g sfdx-cli
 
-      - name: Login to salesforce production org
+      - name: Authenticate with Salesforce Org
         run: |
-        echo ${{ secrets.SFDX_JWT_KEY }} | base64 -di > server.key
-        sfdx force:auth:jwt:grant --username ${{ secrets.SFDX_USERNAME }} --jwt-key-file server.key --client-id ${{ secrets.SFDX_CLIENT_ID }} --set-default
+          echo ${{ secrets.SFDX_JWT_KEY }} | base64 -di > server.key
+          sfdx force:auth:jwt:grant --username ${{ secrets.SFDX_USERNAME }} --jwt-key-file server.key --client-id ${{ secrets.SFDX_CLIENT_ID }} --set-default
 
       - name: Deploy to Salesforce Org
         run: sfdx force:source:deploy -p force-app/main/default
