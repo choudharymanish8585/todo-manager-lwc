@@ -26,6 +26,7 @@ jobs:
       - name: Install SFDX CLI
         run: npm install -g sfdx-cli
 
+      -name: Generate Key
         run: |
           echo ${{ secrets.SFDX_JWT_KEY }} | base64 -di > server.key
 
