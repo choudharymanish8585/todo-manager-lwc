@@ -4,15 +4,16 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'force-app/**'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    env:
-      SFDX_CLIENT_ID: ${{ secrets.SFDX_CLIENT_ID }}
-      SFDX_JWT_KEY: ${{ secrets.SFDX_JWT_KEY }}
-      SFDX_USERNAME: ${{ secrets.SFDX_USERNAME }}
+    with:
+      environment: production
+      secrets: inherit
 
     steps:
       - name: Checkout Code
