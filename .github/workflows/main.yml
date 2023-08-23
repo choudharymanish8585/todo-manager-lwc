@@ -1,0 +1,35 @@
+name: Salesforce Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      SFDX_CLIENT_ID: ${{ secrets.SFDX_CLIENT_ID }}
+      SFDX_JWT_KEY: ${{ secrets.SFDX_JWT_KEY }}
+      SFDX_USERNAME: ${{ secrets.SFDX_USERNAME }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install SFDX CLI
+        run: npm install -g sfdx-cli
+
+      - name: Authenticate with Salesforce Org
+        run: |
+          echo "$SFDX_JWT_KEY" | base64 -d > jwt.key
+          sfdx force:auth:jwt:grant -i $SFDX_CLIENT_ID -f jwt.key -u $SFDX_USERNAME
+
+      - name: Deploy to Salesforce Org
+        run: sfdx force:source:deploy -p force-app/main/default
