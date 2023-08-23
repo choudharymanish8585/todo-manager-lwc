@@ -9,7 +9,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    env:
+    jwt:
       SFDX_CLIENT_ID: ${{ secrets.SFDX_CLIENT_ID }}
       SFDX_JWT_KEY: ${{ secrets.SFDX_JWT_KEY }}
       SFDX_USERNAME: ${{ secrets.SFDX_USERNAME }}
