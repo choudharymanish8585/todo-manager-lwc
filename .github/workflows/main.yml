@@ -4,16 +4,15 @@ on:
   push:
     branches:
       - master
-    paths:
-      - 'force-app/**'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    with:
-      environment: production
-      secrets: inherit
+    env:
+      SFDX_CLIENT_ID: ${{ secrets.SFDX_CLIENT_ID }}
+      SFDX_JWT_KEY: ${{ secrets.SFDX_JWT_KEY }}
+      SFDX_USERNAME: ${{ secrets.SFDX_USERNAME }}
 
     steps:
       - name: Checkout Code
@@ -27,10 +26,12 @@ jobs:
       - name: Install SFDX CLI
         run: npm install -g sfdx-cli
 
-      - name: Authenticate with Salesforce Org
+        - name: Install the production private key
         run: |
-          echo "$SFDX_JWT_KEY" | base64 -d > jwt.key
-          sfdx force:auth:jwt:grant -i $SFDX_CLIENT_ID -f jwt.key --username $SFDX_USERNAME
+echo ${{ secrets.SFDX_JWT_KEY }} | base64 -di > server.key
+
+      - name: Login to salesforce production org
+        run: sf org login jwt --username ${{ secrets.SFDX_USERNAME }} --jwt-key-file server.key --client-id ${{ secrets.SFDX_CLIENT_ID }} --set-default
 
       - name: Deploy to Salesforce OrG
         run: sfdx force:source:deploy -p force-app/main/default
