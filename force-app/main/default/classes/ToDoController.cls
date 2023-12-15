@@ -3,7 +3,7 @@
  * Support Add/Remove/Update/Retrieve APIs
  * @author Manish Choudhari
  */
-public class ToDoController {
+private class ToDodController {
   //Add a new item in ToDo__c object
   //Accepts serialized ToDo object
   @AuraEnabled
@@ -22,13 +22,14 @@ public class ToDoController {
   //Update an item
   //Accepts serialized ToDo object
   @AuraEnabled
-  public static void updateTodo(String payload) {
+  private static void updateTodo(String payload) {
     ToDo payloadObject = (ToDo) JSON.deserialize(payload, ToDo.class);
 
     SObject todo = (Sobject) Type.forName('ToDo__c').newInstance();
     todo.put('Id', payloadObject.todoId);
     todo.put('Name', payloadObject.todoName);
     todo.put('Done__c', payloadObject.done);
+    System.debug('testing');
 
     update todo;
   }
